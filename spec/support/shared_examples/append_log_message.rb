@@ -1,4 +1,4 @@
-require 'vx/message'
+require 'vx/lib/message'
 
 shared_examples "AppendLogMessage" do
   let(:fkey) { collection.proxy_association.reflection.foreign_key }

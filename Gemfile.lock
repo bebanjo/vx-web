@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/pacoguzman/vx-builder.git
+  remote: git://github.com/bebanjo/vx-builder.git
   revision: abf11fbbfbad910f8883d2525ab8f22ec3397d8c
   branch: bebanjo
   specs:
@@ -7,7 +7,20 @@ GIT
       hashr
 
 GIT
-  remote: git://github.com/pacoguzman/vx-common.git
+  remote: git://github.com/bebanjo/vx-common-rack-builder.git
+  revision: 6ac3bf0ee1a1383740551f2a6eeba3e754f3ff8d
+  specs:
+    vx-common-rack-builder (0.0.2)
+
+GIT
+  remote: git://github.com/bebanjo/vx-common-spawn.git
+  revision: abfa7792c175361924ce96d99c8fbb612e243607
+  specs:
+    vx-common-spawn (0.0.8)
+      net-ssh (~> 2.6)
+
+GIT
+  remote: git://github.com/bebanjo/vx-common.git
   revision: c6ea255328e25f5baae688219aaa11278a88a2b0
   branch: bebanjo
   specs:
@@ -17,7 +30,7 @@ GIT
       vx-common-spawn (> 0.0.7)
 
 GIT
-  remote: git://github.com/pacoguzman/vx-consumer.git
+  remote: git://github.com/bebanjo/vx-consumer.git
   revision: d625a8f39f3afe471af3896b7154a3e68730972c
   specs:
     vx-consumer (0.2.0.pre0)
@@ -25,14 +38,22 @@ GIT
       vx-common-rack-builder (>= 0.0.2)
 
 GIT
-  remote: git://github.com/pacoguzman/vx-message.git
-  revision: 9b9afe2ee95ab84a6ba56a7b7d47f4db554bd272
+  remote: git://github.com/bebanjo/vx-instrumentation.git
+  revision: c0163b33549877f33860a70dbf4b60c15866c0b9
+  tag: v0.1.4
   specs:
-    vx-message (0.6.2)
+    vx-instrumentation (0.1.4)
+      activesupport (~> 4.0)
+
+GIT
+  remote: git://github.com/bebanjo/vx-message.git
+  revision: 66f81a50b3a24897cd38f14d6456e024e6a5cd7c
+  specs:
+    vx-lib-message (0.6.4)
       beefcake (= 1.0.0)
 
 GIT
-  remote: git://github.com/pacoguzman/vx-service_connector.git
+  remote: git://github.com/bebanjo/vx-service_connector.git
   revision: 9f8cdac3f919b49dff9c8051cce8a80ee6b0ae2b
   branch: bebanjo
   specs:
@@ -144,7 +165,7 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    net-ssh (2.9.1)
+    net-ssh (2.9.2)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     oauth (0.4.7)
@@ -243,11 +264,6 @@ GEM
     uglifier (2.2.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
-    vx-common-rack-builder (0.0.2)
-    vx-common-spawn (0.0.8)
-      net-ssh (~> 2.6)
-    vx-instrumentation (0.1.4)
-      activesupport (~> 4.0)
     webmock (1.20.4)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -283,8 +299,10 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   vx-builder!
   vx-common!
+  vx-common-rack-builder!
+  vx-common-spawn!
   vx-consumer!
-  vx-instrumentation (= 0.1.4)
-  vx-message!
+  vx-instrumentation!
+  vx-lib-message!
   vx-service_connector!
   webmock

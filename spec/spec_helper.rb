@@ -4,7 +4,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/its'
 require 'webmock/rspec'
-require 'vx/message/testing'
+require 'vx/lib/message/testing'
 require 'vx/consumer/testing'
 
 
