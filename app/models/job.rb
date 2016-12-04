@@ -152,6 +152,19 @@ class Job < ActiveRecord::Base
     end
   end
 
+  def stop
+    unless finished? or cancelled?
+      transaction do
+        self.finished_at = Time.now
+        self.status      = 6
+
+        self.save.or_rollback_transaction
+        self.publish
+        self
+      end
+    end
+  end
+
   def publish(event = nil)
     super(event, channel: channel)
   end
@@ -193,4 +206,3 @@ end
 #  build_id    :uuid             not null
 #  id          :uuid             not null, primary key
 #
-

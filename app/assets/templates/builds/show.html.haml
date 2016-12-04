@@ -7,9 +7,14 @@
       %li
         %a{ href: "/ui/projects/{{ project.id }}/builds" } {{ project.name }}
 
-  .col-sm-4
+  .col-sm-4{ 'ng-click' => "stop()", 'ng-hide' => "build.finished" }
     .title-action
-      %a.btn.btn-white{ 'ng-click' => "restart()", 'ng-show' => "build.finished" }
+      %a.btn.btn-danger
+        %i.fa.fa-ban
+        Stop
+  .col-sm-4{ 'ng-click' => "restart()", 'ng-show' => "build.finished" }
+    .title-action
+      %a.btn.btn-white
         %i.fa.fa-undo
         Restart
 

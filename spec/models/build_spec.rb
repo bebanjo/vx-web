@@ -436,6 +436,48 @@ describe Build do
     end
   end
 
+  context "#stop" do
+    let(:b)    { create :build }
+    let(:job1) { create :job, build: b, number: 1 }
+    let(:job2) { create :job, :deploy, build: b, number: 2 }
+    subject    { b.stop.try(:reload) }
+
+    context "when build is finished" do
+      before do
+        job1.update! status: 2
+        job2.update! status: 2
+        b.update! status: 2
+      end
+
+      it { should eq b }
+
+      its(:started_at)  { should be_nil }
+      its(:finished_at) { should b.finished_at }
+      its(:status_name) { should eq :stopped }
+
+      it "should delivery messages to SockdNotifyConsumer" do
+        expect{
+          subject
+        }.to change(SockdNotifyConsumer.messages, :count).by(3)
+        build_m = SockdNotifyConsumer.messages.pop
+        job2_m  = SockdNotifyConsumer.messages.pop
+
+        expect(job2_m[:channel]).to eq "company/00000000-0000-0000-0000-000000000000"
+        expect(job2_m[:_event]).to eq "job:updated"
+        expect(job2_m[:payload][:id]).to eq job2.id
+
+        expect(job2_m[:channel]).to eq "company/00000000-0000-0000-0000-000000000000"
+        expect(build_m[:_event]).to eq "build:updated"
+      end
+
+      it "should delivery message to JobsConsumer" do
+        expect {
+          subject
+        }.to change(JobsConsumer.messages, :count).to(1)
+      end
+    end
+  end
+
   context "#source" do
     subject { b.source }
     before do

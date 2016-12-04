@@ -21,6 +21,8 @@ gem 'dalli'
 gem 'dotenv'
 gem 'braintree'
 
+gem 'json', '1.8.3'
+
 group :assets do
   gem 'sass-rails', '~> 4.0.0'
   gem 'uglifier', '>= 1.3.0'
@@ -29,7 +31,8 @@ end
 
 group :development, :test do
   gem 'pry-rails'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '2.14'
+  gem 'test-unit'
   gem 'factory_girl_rails'
 end
 

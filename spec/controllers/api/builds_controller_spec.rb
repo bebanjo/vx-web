@@ -57,6 +57,29 @@ describe Api::BuildsController do
     end
   end
 
+  context "POST /stop" do
+    before do
+      any_instance_of(Build) do |b|
+        mock(b).stop { ret }
+      end
+      post :stop, id: b.id, format: :json
+    end
+
+    context "when success" do
+      let(:ret) { b }
+
+      it { should be_success }
+      its(:body) { should_not be_blank }
+    end
+
+    context "when fail" do
+      let(:ret) { nil }
+
+      its(:response_code) { should eq 422 }
+      its(:body) { should be_blank }
+    end
+  end
+
   context "GET /status_for_gitlab" do
 
     it "should be success if project and build found" do

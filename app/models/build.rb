@@ -30,6 +30,7 @@ class Build < ActiveRecord::Base
     state :failed,        value: 4
     state :errored,       value: 5
     state :deploying,     value: 6
+    state :stopped,       value: 7
 
     event :start do
       transition :initialized => :started
@@ -51,7 +52,7 @@ class Build < ActiveRecord::Base
       transition [:initialized, :started] => :deploying
     end
 
-    after_transition any => [:started, :passed, :failed, :errored, :deploying] do |build, transition|
+    after_transition any => [:started, :passed, :failed, :errored, :deploying, :stopped] do |build, transition|
       build.delivery_to_notifier
       build.publish_updated
     end
@@ -86,7 +87,7 @@ class Build < ActiveRecord::Base
   end
 
   def finished?
-    [3,4,5].include?(status)
+    [3,4,5,7].include?(status)
   end
 
   def status_has_changed?
@@ -262,6 +263,27 @@ class Build < ActiveRecord::Base
     end
   end
 
+  def stop
+    unless finished?
+      transaction do
+        Project.lock(true).find_by(id: project_id)
+        self.finished_at = Time.now
+        self.status      = 7
+
+        self.save.or_rollback_transaction
+
+        self.jobs.each do |job|
+          job.stop.or_rollback_transaction
+        end
+
+        publish_perform_job_messages
+
+        self.publish
+        self
+      end
+    end
+  end
+
   def delivery_to_notifier
     ::BuildNotifyConsumer.publish(
       self.attributes,
@@ -328,4 +350,3 @@ end
 #  project_id      :uuid             not null
 #  id              :uuid             not null, primary key
 #
-

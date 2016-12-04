@@ -37,6 +37,7 @@ VxWeb::Application.routes.draw do
     resources :builds, only: [:show] do
       member do
         post :restart
+        post :stop
         get :status_for_gitlab, constraints: { id: SHA_RE }
       end
       resources :jobs, only: [:index]

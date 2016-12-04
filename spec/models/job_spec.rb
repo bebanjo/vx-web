@@ -194,6 +194,29 @@ describe Job do
     end
   end
 
+  context "#stop!" do
+    let(:job) { create :job }
+    subject   { job.stop.try(:reload) }
+
+    context "when job is running" do
+      before do
+        job.update! status: 2
+      end
+
+      it { should eq job }
+
+      its(:started_at)  { should be_nil }
+      its(:finished_at) { should job.finished_at }
+      its(:status_name) { should eq :cancelled }
+
+      it "should delivery message to SockdNotifyConsumer" do
+        expect{
+          subject
+        }.to change(SockdNotifyConsumer.messages, :count).by(1)
+      end
+    end
+  end
+
   context ".status" do
     subject { described_class.status }
 

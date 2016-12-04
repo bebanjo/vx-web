@@ -21,6 +21,14 @@ class ::Api::BuildsController < ::Api::BaseController
     end
   end
 
+  def stop
+    if build.stop
+      respond_with build, location: [:api, build]
+    else
+      head :unprocessable_entity
+    end
+  end
+
   def status_for_gitlab
     @token   = request.headers['HTTP_X_VEXOR_PROJECT_TOKEN']
     @sha     = params[:id]

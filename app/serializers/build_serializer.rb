@@ -22,6 +22,6 @@ class BuildSerializer < ActiveModel::Serializer
   end
 
   def finished
-    [3,4,5].include?(object.status)
+    object.finished?
   end
 end

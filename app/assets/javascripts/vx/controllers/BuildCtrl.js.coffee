@@ -13,6 +13,10 @@ Vx.controller 'BuildCtrl', ['$scope', 'projectModel', 'buildModel', 'build', 'jo
       $scope.regularJobs = _.filter(jobs, (it) -> it.kind == 'regular')
       $scope.deployJobs  = _.filter(jobs, (it) -> it.kind == 'deploy')
 
+
+    $scope.stop = () ->
+      buildModel.stop(build)
+
     $scope.restart = () ->
       buildModel.restart(build)
 

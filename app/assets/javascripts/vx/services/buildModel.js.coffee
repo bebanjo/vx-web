@@ -39,6 +39,12 @@ Vx.service "buildModel", ['$http', 'cacheService', 'eventSource',
         cache.updateOne("one:#{build.id}", re.data)
         re.data
 
+    stop: (build) ->
+      $http.post("/api/builds/#{build.id}/stop").then (re) ->
+        cache.updateAll("all:#{build.projectId}", re.data)
+        cache.updateOne("one:#{build.id}", re.data)
+        re.data
+
     loadMore: (projectId, branch) ->
       all(projectId, branch).then (builds) ->
         lastBuild = _.last(builds)
